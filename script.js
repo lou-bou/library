@@ -32,7 +32,6 @@ function displayBooks(library) {
         remove_book.setAttribute("class", "remove-book");
         remove_book.setAttribute("data-book-id", book.id);
         remove_book.textContent = "Remove Book";
-        
 
         book_card.appendChild(remove_book);
         container.appendChild(book_card);
@@ -50,8 +49,8 @@ const new_book_dialog = document.querySelector("#new-book-dialog");
 const new_book_form = document.querySelector("#new-book-dialog form");
 const new_book_close = document.querySelector("#new-book-dialog > button");
 const new_book_submit = document.querySelector('#new-book-dialog button[type="submit"]');
-let remove_book_btns = document.querySelectorAll(".remove-book");
 let book_cards = document.querySelectorAll(".book-card");
+let remove_book_btns = document.querySelectorAll(".remove-book");
 
 new_book_open.addEventListener("click", () => {
     new_book_dialog.showModal();
@@ -80,10 +79,26 @@ new_book_submit.addEventListener("click", () => {
     hideBooks(myLibrary); // hide all current books. Not using this would display duplicates
     displayBooks(myLibrary);
 
-    book_cards = document.querySelectorAll(".book-card");
-    remove_book_btns = document.querySelectorAll(".remove-book");
+    book_cards = document.querySelectorAll(".book-card"); // get the new book-card's DOM
+    remove_book_btns = document.querySelectorAll(".remove-book"); // get the new remove-book's DOM
+
+    remove_book_btns.forEach((remove_book_btn) => {
+        remove_book_btn.addEventListener("click", () => {
+            book_cards.forEach((book_card) => {
+                if (book_card.getAttribute("data-book-id") == remove_book_btn.getAttribute("data-book-id")) {
+                    let bookID = book_card.getAttribute("data-book-id");
+                    book_card.parentNode.removeChild(book_card);
+                    for (const book of myLibrary) {
+                        if (book.id == bookID) {
+                            myLibrary.splice(myLibrary.indexOf(book), 1);
+                        }
+                    }
+                }
+            })
+        });
+    });
 });
 
 new_book_close.addEventListener("click", () => {
     new_book_dialog.close();
-});
+}); 
