@@ -21,12 +21,26 @@ function addBook(title, author, pages, read) {
 
 function displayBooks(library) {
     let book_card;
+    let remove_book;
     for (const book of library) {
         book_card = document.createElement("div");
-        book_card.classList.add = "book-card";
+        book_card.setAttribute("class", "book-card");
+        book_card.setAttribute("data-book-id", book.id);
         book_card.textContent = book.info();
+        
+        remove_book = document.createElement("button");
+        remove_book.setAttribute("class", "remove-book");
+        remove_book.setAttribute("data-book-id", book.id);
+        remove_book.textContent = "Remove Book";
+        
+
+        book_card.appendChild(remove_book);
         container.appendChild(book_card);
     }
+}
+
+function hideBooks(library) {
+    container.innerHTML = '';
 }
 
 const myLibrary = [];
@@ -36,6 +50,8 @@ const new_book_dialog = document.querySelector("#new-book-dialog");
 const new_book_form = document.querySelector("#new-book-dialog form");
 const new_book_close = document.querySelector("#new-book-dialog > button");
 const new_book_submit = document.querySelector('#new-book-dialog button[type="submit"]');
+let remove_book_btns = document.querySelectorAll(".remove-book");
+let book_cards = document.querySelectorAll(".book-card");
 
 new_book_open.addEventListener("click", () => {
     new_book_dialog.showModal();
@@ -60,6 +76,12 @@ new_book_submit.addEventListener("click", (e) => {
 
 new_book_submit.addEventListener("click", () => {
     addBook(new_book_form.title.value, new_book_form.author.value, new_book_form.pages.value, new_book_form.read.value);
+
+    hideBooks(myLibrary); // hide all current books. Not using this would display duplicates
+    displayBooks(myLibrary);
+
+    book_cards = document.querySelectorAll(".book-card");
+    remove_book_btns = document.querySelectorAll(".remove-book");
 });
 
 new_book_close.addEventListener("click", () => {
