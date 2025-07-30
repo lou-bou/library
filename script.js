@@ -22,6 +22,7 @@ function addBook(title, author, pages, read) {
 function displayBooks(library) {
     let book_card;
     let remove_book;
+    let change_status;
     for (const book of library) {
         book_card = document.createElement("div");
         book_card.setAttribute("class", "book-card");
@@ -33,6 +34,12 @@ function displayBooks(library) {
         remove_book.setAttribute("data-book-id", book.id);
         remove_book.textContent = "Remove Book";
 
+        change_status = document.createElement("button");
+        change_status.setAttribute("class", "change-status");
+        change_status.setAttribute("data-book-id", book.id);
+        change_status.textContent = "Change Status";
+
+        book_card.appendChild(change_status);
         book_card.appendChild(remove_book);
         container.appendChild(book_card);
     }
