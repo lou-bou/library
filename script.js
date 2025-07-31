@@ -14,7 +14,7 @@ function Book(title, author, pages, read) {
     }
 }
 
-Book.prototype.changeStatus = function() {
+Book.prototype.toggleStatus = function() {
     if (this.read) {
         this.read = false;
     } else {
@@ -39,6 +39,19 @@ function removeBook(book_card, remove_book_btn) { // remove the book from the DO
         for (const book of myLibrary) {
             if (book.id == bookID) {
                 myLibrary.splice(myLibrary.indexOf(book), 1);
+            }
+        }
+    }
+}
+
+function changeStatus(book_card, change_status_btn) {
+    if (book_card.getAttribute("data-book-id") == change_status_btn.getAttribute("data-book-id")) {
+        let bookID = book_card.getAttribute("data-book-id");
+        const book_info = document.querySelector(`.book-info[data-book-id="${bookID}"]`);
+        for (const book of myLibrary) {
+            if (book.id == bookID) {
+                book.toggleStatus();
+                book_info.textContent = book.info();
             }
         }
     }
@@ -126,6 +139,12 @@ new_book_submit.addEventListener("click", () => {
         });
     });
 
+    change_status_btns.forEach((change_status_btn) => {
+        change_status_btn.addEventListener("click", () => {
+            book_cards.forEach((book_card) => changeStatus(book_card, change_status_btn));
+        });
+    });
+
     /* Another method (a better one) for the remove and change status functionalities, better than hard-coding eventlisteners for newly created DOM elements
 
     Original message: https://discord.com/channels/505093832157691914/690590001486102589/1400407766669066285
@@ -137,23 +156,6 @@ new_book_submit.addEventListener("click", () => {
         if (e.target.id === someID){...} // do smth
     });
     */
-
-    change_status_btns.forEach((change_status_btn) => {
-        change_status_btn.addEventListener("click", () => {
-            book_cards.forEach((book_card) => {
-                if (book_card.getAttribute("data-book-id") == change_status_btn.getAttribute("data-book-id")) {
-                    let bookID = book_card.getAttribute("data-book-id");
-                    const book_info = document.querySelector(`.book-info[data-book-id="${bookID}"]`);
-                    for (const book of myLibrary) {
-                        if (book.id == bookID) {
-                            book.changeStatus();
-                            book_info.textContent = book.info();
-                        }
-                    }
-                }
-            });
-        });
-    });
 });
 
 new_book_close.addEventListener("click", () => {
