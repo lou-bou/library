@@ -14,7 +14,20 @@ function Book(title, author, pages, read) {
     }
 }
 
+Book.prototype.changeStatus = function() {
+    if (this.read) {
+        this.read = false;
+    } else {
+        this.read = true;
+    }
+}
+
 function addBook(title, author, pages, read) {
+    if (read == "true") { // the form sends the read value (true/false) as a string not a boolean
+        read = true;
+    } else {
+        read = false;
+    }
     let book = new Book(title, author, pages, read);
     myLibrary.push(book);
 }
@@ -40,7 +53,11 @@ function displayBooks(library) {
         book_card = document.createElement("div");
         book_card.setAttribute("class", "book-card");
         book_card.setAttribute("data-book-id", book.id);
-        book_card.textContent = book.info();
+
+        book_info = document.createElement("p");
+        book_info.setAttribute("class", "book-info");
+        book_info.setAttribute("data-book-id", book.id);
+        book_info.textContent = book.info();
         
         remove_book = document.createElement("button");
         remove_book.setAttribute("class", "remove-book");
@@ -52,6 +69,7 @@ function displayBooks(library) {
         change_status.setAttribute("data-book-id", book.id);
         change_status.textContent = "Change Status";
 
+        book_card.appendChild(book_info);
         book_card.appendChild(change_status);
         book_card.appendChild(remove_book);
         container.appendChild(book_card);
@@ -61,6 +79,7 @@ function displayBooks(library) {
 function selectCurrentBooks() { // reselect the current books displayed in the DOM.
     book_cards = document.querySelectorAll(".book-card");
     remove_book_btns = document.querySelectorAll(".remove-book");
+    change_status_btns = document.querySelectorAll(".change-status");
 }
 
 const myLibrary = [];
@@ -72,6 +91,8 @@ const new_book_close = document.querySelector("#new-book-dialog > button");
 const new_book_submit = document.querySelector('#new-book-dialog button[type="submit"]');
 let book_cards = document.querySelectorAll(".book-card"); // initial selection of .book_card divs
 let remove_book_btns = document.querySelectorAll(".remove-book"); // initial selection of .remove-book buttons
+let change_status_btns = document.querySelectorAll(".change-status"); // initial selection of .change-status buttons
+// for the 3 previous DOM selectors, by default there should be no elements to select initially
 
 new_book_open.addEventListener("click", () => {
     new_book_dialog.showModal();
@@ -96,12 +117,41 @@ new_book_submit.addEventListener("click", (e) => {
 
 new_book_submit.addEventListener("click", () => {
     addBook(new_book_form.title.value, new_book_form.author.value, new_book_form.pages.value, new_book_form.read.value);
-    displayBooks(myLibrary); // re-displaying
-    selectCurrentBooks(); // re-selection
+    displayBooks(myLibrary); // re-displaying all books to display the new book
+    selectCurrentBooks(); // re-selection of all book DOM elements to select the new book
 
     remove_book_btns.forEach((remove_book_btn) => {
         remove_book_btn.addEventListener("click", () => {
             book_cards.forEach((book_card) => removeBook(book_card, remove_book_btn));
+        });
+    });
+
+    /* Another method (a better one) for the remove and change status functionalities, better than hard-coding eventlisteners for newly created DOM elements
+
+    Original message: https://discord.com/channels/505093832157691914/690590001486102589/1400407766669066285
+
+    document.addEventListener('click', function(e){ // or someDiv.addEventListener(...)
+        e.preventDefault();
+        if (e.target.classList[someIndex] === someClassName) {...}//do smth
+        // or
+        if (e.target.id === someID){...} // do smth
+    });
+    */
+
+    change_status_btns.forEach((change_status_btn) => {
+        change_status_btn.addEventListener("click", () => {
+            book_cards.forEach((book_card) => {
+                if (book_card.getAttribute("data-book-id") == change_status_btn.getAttribute("data-book-id")) {
+                    let bookID = book_card.getAttribute("data-book-id");
+                    const book_info = document.querySelector(`.book-info[data-book-id="${bookID}"]`);
+                    for (const book of myLibrary) {
+                        if (book.id == bookID) {
+                            book.changeStatus();
+                            book_info.textContent = book.info();
+                        }
+                    }
+                }
+            });
         });
     });
 });
