@@ -19,6 +19,18 @@ function addBook(title, author, pages, read) {
     myLibrary.push(book);
 }
 
+function removeBook(book_card, remove_book_btn) { // remove the book from the DOM and the library array
+    if (book_card.getAttribute("data-book-id") == remove_book_btn.getAttribute("data-book-id")) {
+        let bookID = book_card.getAttribute("data-book-id"); // the book in the library can be accessed through its ID. The DOM elements for the book (book_card...etc) are associated with the book with the data-book-id attribute.
+        book_card.parentNode.removeChild(book_card);
+        for (const book of myLibrary) {
+            if (book.id == bookID) {
+                myLibrary.splice(myLibrary.indexOf(book), 1);
+            }
+        }
+    }
+}
+
 function displayBooks(library) {
     container.innerHTML = ''; // hide all current books. Not using this would display duplicates
     let book_card;
@@ -46,6 +58,11 @@ function displayBooks(library) {
     }
 }
 
+function selectCurrentBooks() { // reselect the current books displayed in the DOM.
+    book_cards = document.querySelectorAll(".book-card");
+    remove_book_btns = document.querySelectorAll(".remove-book");
+}
+
 const myLibrary = [];
 const container = document.querySelector(".container");
 const new_book_open = document.querySelector("#new-book-button");
@@ -53,8 +70,8 @@ const new_book_dialog = document.querySelector("#new-book-dialog");
 const new_book_form = document.querySelector("#new-book-dialog form");
 const new_book_close = document.querySelector("#new-book-dialog > button");
 const new_book_submit = document.querySelector('#new-book-dialog button[type="submit"]');
-let book_cards = document.querySelectorAll(".book-card");
-let remove_book_btns = document.querySelectorAll(".remove-book");
+let book_cards = document.querySelectorAll(".book-card"); // initial selection of .book_card divs
+let remove_book_btns = document.querySelectorAll(".remove-book"); // initial selection of .remove-book buttons
 
 new_book_open.addEventListener("click", () => {
     new_book_dialog.showModal();
@@ -79,26 +96,12 @@ new_book_submit.addEventListener("click", (e) => {
 
 new_book_submit.addEventListener("click", () => {
     addBook(new_book_form.title.value, new_book_form.author.value, new_book_form.pages.value, new_book_form.read.value);
-
-    
-    displayBooks(myLibrary);
-
-    book_cards = document.querySelectorAll(".book-card"); // get the new book-card's DOM
-    remove_book_btns = document.querySelectorAll(".remove-book"); // get the new remove-book's DOM
+    displayBooks(myLibrary); // re-displaying
+    selectCurrentBooks(); // re-selection
 
     remove_book_btns.forEach((remove_book_btn) => {
         remove_book_btn.addEventListener("click", () => {
-            book_cards.forEach((book_card) => {
-                if (book_card.getAttribute("data-book-id") == remove_book_btn.getAttribute("data-book-id")) {
-                    let bookID = book_card.getAttribute("data-book-id");
-                    book_card.parentNode.removeChild(book_card);
-                    for (const book of myLibrary) {
-                        if (book.id == bookID) {
-                            myLibrary.splice(myLibrary.indexOf(book), 1);
-                        }
-                    }
-                }
-            })
+            book_cards.forEach((book_card) => removeBook(book_card, remove_book_btn));
         });
     });
 });
