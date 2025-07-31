@@ -44,6 +44,14 @@ function removeBook(book_card, remove_book_btn) { // remove the book from the DO
     }
 }
 
+function interpretReadBool(book) {
+    if (book.read) {
+        return "Read";
+    } else {
+        return "Unread";
+    }
+}
+
 function changeStatus(book_card, change_status_btn) {
     if (book_card.getAttribute("data-book-id") == change_status_btn.getAttribute("data-book-id")) {
         let bookID = book_card.getAttribute("data-book-id");
@@ -51,7 +59,8 @@ function changeStatus(book_card, change_status_btn) {
         for (const book of myLibrary) {
             if (book.id == bookID) {
                 book.toggleStatus();
-                book_info.textContent = book.info();
+                change_status_btn.setAttribute("data-book-read", interpretReadBool(book));
+                change_status_btn.textContent = interpretReadBool(book);
             }
         }
     }
@@ -67,10 +76,22 @@ function displayBooks(library) {
         book_card.setAttribute("class", "book-card");
         book_card.setAttribute("data-book-id", book.id);
 
-        book_info = document.createElement("p");
+        book_info = document.createElement("div");
         book_info.setAttribute("class", "book-info");
         book_info.setAttribute("data-book-id", book.id);
-        book_info.textContent = book.info();
+        
+        book_title = document.createElement("p");
+        book_title.textContent = `"${book.title}"`;
+
+        book_author = document.createElement("p");
+        book_author.textContent = "by " + book.author;
+
+        book_pages = document.createElement("p");
+        book_pages.textContent = book.pages + " pages";
+
+        book_info.appendChild(book_title);
+        book_info.appendChild(book_author);
+        book_info.appendChild(book_pages);
         
         remove_book = document.createElement("button");
         remove_book.setAttribute("class", "remove-book");
@@ -80,7 +101,8 @@ function displayBooks(library) {
         change_status = document.createElement("button");
         change_status.setAttribute("class", "change-status");
         change_status.setAttribute("data-book-id", book.id);
-        change_status.textContent = "Change Status";
+        change_status.setAttribute("data-book-read", interpretReadBool(book));
+        change_status.textContent = interpretReadBool(book);
 
         book_card.appendChild(book_info);
         book_card.appendChild(change_status);

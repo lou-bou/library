@@ -1,5 +1,6 @@
 * {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    padding: 0;
 }
 
 html, body {
@@ -7,8 +8,103 @@ html, body {
     height: 100%;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .header {
     background: #8BF3A7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    justify-content: center;
+    gap: 50px;
+}
+
+.book-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.book-card, .book-card * {
+    margin: 0;
+}
+
+.book-card div {
+    width: 150px;
+    height: 190px;
+    border: 3px solid black;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-card div p {
+    font-size: 20px;
+    text-wrap: wrap;
+    text-align: center;
+}
+
+.change-status, .remove-book {
+    width: 110px;
+    height: 30px;
+    border: none;
+}
+
+.change-status[data-book-read="Read"] {
+    background: #8BF3A7;
+}
+
+.change-status[data-book-read="Unread"] {
+    background: #F38B8B;
+}
+
+.remove-book {
+    background: rgb(161, 0, 0);
+    color: white;
+}
+
+#new-book-button {
+    width: 160px;
+    height: 70px;
+    border: none;
+    background: #8BF3A7;
+    border-radius: 10px;
+}
+
+#new-book-button img {
+    width: 40%;
+    height: 40%;
+}
+
+#new-book-button p {
+    font-size: 20px;
+    margin: 0;
+}
+
+.footer {
+    background: #D9D9D9;
     display: flex;
     justify-content: center;
     align-items: center;
