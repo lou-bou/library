@@ -20,6 +20,7 @@ function addBook(title, author, pages, read) {
 }
 
 function displayBooks(library) {
+    container.innerHTML = ''; // hide all current books. Not using this would display duplicates
     let book_card;
     let remove_book;
     let change_status;
@@ -43,10 +44,6 @@ function displayBooks(library) {
         book_card.appendChild(remove_book);
         container.appendChild(book_card);
     }
-}
-
-function hideBooks(library) {
-    container.innerHTML = '';
 }
 
 const myLibrary = [];
@@ -83,7 +80,7 @@ new_book_submit.addEventListener("click", (e) => {
 new_book_submit.addEventListener("click", () => {
     addBook(new_book_form.title.value, new_book_form.author.value, new_book_form.pages.value, new_book_form.read.value);
 
-    hideBooks(myLibrary); // hide all current books. Not using this would display duplicates
+    
     displayBooks(myLibrary);
 
     book_cards = document.querySelectorAll(".book-card"); // get the new book-card's DOM
