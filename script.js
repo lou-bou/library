@@ -151,33 +151,40 @@ new_book_submit.addEventListener("click", (e) => {
 */
 
 new_book_submit.addEventListener("click", () => {
-    addBook(new_book_form.title.value, new_book_form.author.value, new_book_form.pages.value, new_book_form.read.value);
-    displayBooks(myLibrary); // re-displaying all books to display the new book
-    selectCurrentBooks(); // re-selection of all book DOM elements to select the new book
+    let new_title = new_book_form.title.value;
+    let new_author = new_book_form.author.value;
+    let new_pages = new_book_form.pages.value;
+    let new_read = new_book_form.read.value;
+    if (new_title && new_author && new_pages && new_read) {
+        addBook(new_book_form.title.value, new_book_form.author.value, new_book_form.pages.value, new_book_form.read.value);
+        displayBooks(myLibrary); // re-displaying all books to display the new book
+        selectCurrentBooks(); // re-selection of all book DOM elements to select the new book
 
-    remove_book_btns.forEach((remove_book_btn) => {
-        remove_book_btn.addEventListener("click", () => {
-            book_cards.forEach((book_card) => removeBook(book_card, remove_book_btn));
+        remove_book_btns.forEach((remove_book_btn) => {
+            remove_book_btn.addEventListener("click", () => {
+                book_cards.forEach((book_card) => removeBook(book_card, remove_book_btn));
+            });
         });
-    });
 
-    change_status_btns.forEach((change_status_btn) => {
-        change_status_btn.addEventListener("click", () => {
-            book_cards.forEach((book_card) => changeStatus(book_card, change_status_btn));
+        change_status_btns.forEach((change_status_btn) => {
+            change_status_btn.addEventListener("click", () => {
+                book_cards.forEach((book_card) => changeStatus(book_card, change_status_btn));
+            });
         });
-    });
 
-    /* Another method (a better one) for the remove and change status functionalities, better than hard-coding eventlisteners for newly created DOM elements
+        /* Another method (a better one) for the remove and change status functionalities, better than hard-coding eventlisteners for newly created DOM elements
 
-    Original message: https://discord.com/channels/505093832157691914/690590001486102589/1400407766669066285
+        Original message: https://discord.com/channels/505093832157691914/690590001486102589/1400407766669066285
 
-    document.addEventListener('click', function(e){ // or someDiv.addEventListener(...)
-        e.preventDefault();
-        if (e.target.classList[someIndex] === someClassName) {...}//do smth
-        // or
-        if (e.target.id === someID){...} // do smth
-    });
-    */
+        document.addEventListener('click', function(e){ // or someDiv.addEventListener(...)
+            e.preventDefault();
+            if (e.target.classList[someIndex] === someClassName) {...}//do smth
+            // or
+            if (e.target.id === someID){...} // do smth
+        });
+        */
+    }
+    
 });
 
 new_book_close.addEventListener("click", () => {
