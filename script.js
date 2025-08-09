@@ -18,7 +18,7 @@ class Book {
     }
 }
 
-Book.prototype.toggleStatus = function() {
+Book.prototype.toggleStatus = function() { // this still works with ES6 classes since they're just a new syntax for objects and object constructors
     if (this.read) {
         this.read = false;
     } else {
@@ -26,7 +26,7 @@ Book.prototype.toggleStatus = function() {
     }
 }
 
-function addBook(title, author, pages, read) {
+function addBook(title, author, pages, read) { // adds a book to the library after it is created from the Book class
     if (read == "true") { // the form sends the read value (true/false) as a string not a boolean
         read = true;
     } else {
@@ -48,7 +48,7 @@ function removeBook(book_card, remove_book_btn) { // remove the book from the DO
     }
 }
 
-function interpretReadBool(book) {
+function interpretReadBool(book) { // interprets the read values of Book into human language
     if (book.read) {
         return "Read";
     } else {
@@ -56,7 +56,7 @@ function interpretReadBool(book) {
     }
 }
 
-function changeStatus(book_card, change_status_btn) {
+function changeStatus(book_card, change_status_btn) { // change status of a book from unread to read and the opposite
     if (book_card.getAttribute("data-book-id") == change_status_btn.getAttribute("data-book-id")) {
         let bookID = book_card.getAttribute("data-book-id");
         const book_info = document.querySelector(`.book-info[data-book-id="${bookID}"]`);
@@ -70,7 +70,7 @@ function changeStatus(book_card, change_status_btn) {
     }
 }
 
-function displayBooks(library) {
+function displayBooks(library) { // re-display the library of books updated with any newly added book
     container.innerHTML = ''; // hide all current books. Not using this would display duplicates
     let book_card;
     let remove_book;
@@ -115,7 +115,7 @@ function displayBooks(library) {
     }
 }
 
-function selectCurrentBooks() { // reselect the current books displayed in the DOM.
+function selectCurrentBooks() { // reselect the current books displayed in the DOM
     book_cards = document.querySelectorAll(".book-card");
     remove_book_btns = document.querySelectorAll(".remove-book");
     change_status_btns = document.querySelectorAll(".change-status");
