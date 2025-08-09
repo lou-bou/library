@@ -1,15 +1,19 @@
-function Book(title, author, pages, read) {
-    if (!new.target) {
-        throw Error("You must use the 'new' keyword to call the constructor.");
+class Book {
+    id;
+    title;
+    author;
+    pages;
+    read;
+
+    constructor(title, author, pages, read) {
+        this.id = crypto.randomUUID();
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
     }
 
-    this.id = crypto.randomUUID();
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = read;
-
-    this.info = function () {
+    getInfo() {
         return this.title + " by " + this.author + ", " + this.pages + " pages, " + (this.read? "already read." : "not read yet.");
     }
 }
